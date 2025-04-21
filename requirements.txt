@@ -5,3 +5,6 @@ gspread
 oauth2client
 pyotp
 qrcode
+openpyxl
+jinja2
+pillow

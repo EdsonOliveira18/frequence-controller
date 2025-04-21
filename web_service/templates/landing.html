@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Registro de Presença Junina</title>
+  <link rel="stylesheet" href="/static/css/landing.css">
+</head>
+<body>
+  <div class="container">
+    <div class="left-section">
+      <img src="/static/img/relogio-junino.png" alt="Relógio Junino">
+    </div>
+
+    <div class="right-section">
+      <div class="carousel">
+        <!-- Slide QRCode -->
+        <div class="slide active" id="slide-qrcode">
+          <h2>Escaneie o QR Code</h2>
+          <img src="/qrcode" alt="QR Code" class="qrcode-img">
+          <p>Aponte a câmera do seu celular</p>
+          <img src="/static/img/arrow-right.png" class="arrow" onclick="nextSlide()" alt="Próximo">
+        </div>
+
+        <!-- Slide Formulário -->
+        <div class="slide" id="slide-form">
+          <h2>Registrar com CPF</h2>
+          <form id="form-cpf">
+            <input type="text" id="cpf" placeholder="123.456.789-00" maxlength="14" required>
+            <input type="hidden" id="horario">
+            <input type="hidden" id="localizacao">
+            <button type="submit">Enviar</button>
+          </form>
+          <p id="resultado"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/landing.js"></script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #fff8f0;
+  }
+  
+  .container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .left-section {
+    flex: 1;
+    background-color: #fbe9d7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .left-section img {
+    width: 90%;
+    max-width: 400px;
+  }
+  
+  .right-section {
+    flex: 1;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .carousel {
+    width: 100%;
+    position: relative;
+  }
+  
+  .slide {
+    display: none;
+    text-align: center;
+  }
+  
+  .slide.active {
+    display: block;
+  }
+  
+  .qrcode-img {
+    width: 250px;
+    height: 250px;
+    margin-bottom: 1rem;
+  }
+  
+  .arrow {
+    width: 40px;
+    cursor: pointer;
+    margin-top: 1rem;
+  }
+  
+  input, button {
+    width: 80%;
+    margin-top: 1rem;
+    padding: 0.8rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+  }
+  
+  button {
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+  }
+  
