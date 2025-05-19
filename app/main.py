@@ -1,32 +1,38 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
+
+from app.routes import user_register
 from app.database import Base, engine
-from app import models  # Aqui, importamos os modelos, isso garante que "Base" reconheça todas as tabelas.
-
-app = FastAPI(title="Sistema de Controle de Ponto - GAMT")
-
-# Configuração de CORS (permite front acessar o backend local)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+from app import models  # Isso garante que Base conheça os modelos
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Executado no startup a criação do Banco de Dados
+    # Executa no início da aplicação
     Base.metadata.create_all(bind=engine)
+    print("✅ Banco de dados conectado com sucesso.")
     yield
-    # Aqui seria o shutdown (se precisar fechar conexões, etc)
+    # Aqui executaria código de finalização se necessário (ex: db.close())
 
+# Criação única da aplicação com lifespan
 app = FastAPI(
     title="Sistema de Controle de Ponto - GAMT",
     lifespan=lifespan
 )
 
+# Middleware de CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Em produção, restrinja para os domínios do front
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Inclusão das rotas do módulo user_register
+app.include_router(user_register.router)
+
+# Rota principal (teste)
 @app.get("/")
 def read_root():
     return {"mensagem": "API iniciada com sucesso"}
