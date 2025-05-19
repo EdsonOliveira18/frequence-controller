@@ -1,1 +1,3 @@
 .venv_fp
+.env
+__pycache__/
