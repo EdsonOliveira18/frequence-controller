@@ -1,10 +1,5 @@
 fastapi
 uvicorn
 python-dotenv
-gspread
-oauth2client
-pyotp
+bcrypt
 qrcode
-openpyxl
-jinja2
-pillow
