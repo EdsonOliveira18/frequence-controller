@@ -90,7 +90,6 @@ const form = ref<FormularioCadastro>({
 
 const senhaGerada = ref('')
 const erro = ref('')
-const mostrarDialogSucesso = ref(false)
 const mostrarDialogErro = ref(false)
 
 const formularioValido = computed(() =>

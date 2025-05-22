@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
-from app.routes import user_register
+from app.routes import colaboradores, user_register
 from app.database import Base, engine
 from app import models  # Isso garante que Base conheça os modelos
 
@@ -30,9 +30,12 @@ app.add_middleware(
 )
 
 # Inclusão das rotas do módulo user_register
-app.include_router(user_register.router)
+app.include_router(
+    user_register.router,
+    colaboradores.router
+    )
 
-# Rota principal (teste)
+# Rota principal
 @app.get("/")
 def read_root():
     return {"mensagem": "API iniciada com sucesso"}
