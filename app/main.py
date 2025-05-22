@@ -30,10 +30,8 @@ app.add_middleware(
 )
 
 # Inclusão das rotas do módulo user_register
-app.include_router(
-    user_register.router,
-    colaboradores.router
-    )
+app.include_router(user_register.router)
+app.include_router(colaboradores.router)
 
 # Rota principal
 @app.get("/")
