@@ -207,6 +207,7 @@ const dadosParaEnvio = {
   color: red;
   font-weight: bold;
   font-size: 24px;
+  text-align: center;
 }
 
 .destaque {

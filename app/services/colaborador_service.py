@@ -10,7 +10,7 @@ def login_colaborador(cpf: str, senha: str, db: Session):
     if not colaborador:
         raise HTTPException(status_code=401, detail="Colaborador não encontrado")
 
-    if not verificar_senha(senha, colaborador.senha):
+    if not verificar_senha(senha, colaborador.senha_hash):
         raise HTTPException(status_code=401, detail="Senha incorreta")
 
     return colaborador
