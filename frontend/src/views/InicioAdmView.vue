@@ -15,14 +15,13 @@
               <span>Novo Colaborador</span>
           </div>
       </Button>
-            <Button
-          class="botaoQuadrado">
-          <div class="conteudoBotao">
-              <i class="pi pi-clock"></i>
-              <span>Registro de Ponto</span>
-          </div>
+      <Button class="botaoQuadrado" @click="mostrarLogin = true">
+        <div class="conteudoBotao">
+          <i class="pi pi-clock"></i>
+          <span>Registro de Ponto</span>
+        </div>
       </Button>
-            <Button
+      <Button
           class="botaoQuadrado">
           <div class="conteudoBotao">
               <i class="pi pi-download"></i>
@@ -30,7 +29,7 @@
           </div>
       </Button>
 
-      <Dialog v-model:visible="mostrarModal" modal class="dialogQrCode">
+      <Dialog v-model:visible="mostrarModal" modal>
         <template #header>
           <h2 class="custom-dialog-title">Cadastro de Colaborador</h2>
         </template>
@@ -46,6 +45,7 @@
         </div>
       </Dialog>
     </div>
+  <ModalLoginColaborador v-model:visible="mostrarLogin" />
   </div>
 </template>
 
@@ -54,7 +54,9 @@ import { ref } from 'vue'
 import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
 import QrcodeVue from 'qrcode.vue'
+import ModalLoginColaborador from '@/components/ModalLoginColaborador.vue'
 
+const mostrarLogin = ref(false)
 const mostrarModal = ref(false)
 const urlCadastro = `${import.meta.env.VITE_PUBLIC_APP_URL}/cadastro`
 </script>

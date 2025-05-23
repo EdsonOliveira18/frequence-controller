@@ -19,3 +19,8 @@ export async function cadastrarColaborador(
   const response = await axios.post(`${API_BASE_URL}/cadastro`, dados)
   return response.data
 }
+
+export const loginColaborador = async (dados: { cpf: string; senha: string }) => {
+  const response = await axios.post(`${API_BASE_URL}/login`, dados)
+  return response.data
+}

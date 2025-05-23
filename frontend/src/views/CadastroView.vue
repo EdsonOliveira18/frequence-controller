@@ -90,7 +90,6 @@ const form = ref<FormularioCadastro>({
 
 const senhaGerada = ref('')
 const erro = ref('')
-const mostrarDialogSucesso = ref(false)
 const mostrarDialogErro = ref(false)
 
 const formularioValido = computed(() =>
@@ -99,25 +98,19 @@ const formularioValido = computed(() =>
   form.value.email.trim() !== ''
 )
 
-const copiarSenha = async () => {
-  try {
-    await navigator.clipboard.writeText(senhaGerada.value)
-    alert('Senha copiada para a área de transferência!')
-  } catch {
-    alert('Erro ao copiar senha.')
-  }
-}
-
 const handleSubmit = async () => {
   erro.value = ''
   senhaGerada.value = ''
   mostrarDialogErro.value = false
-  mostrarDialogSucesso.value = false
 
+const dadosParaEnvio = {
+  ...form.value,
+  cpf: form.value.cpf.replace(/\D/g, '')
+}
+  
   try {
-    const resposta = await cadastrarColaborador(form.value)
+    const resposta = await cadastrarColaborador(dadosParaEnvio)
     senhaGerada.value = resposta.senha_gerada
-    mostrarDialogSucesso.value = true
   } catch (err: any) {
     erro.value = err?.response?.data?.detail || 'Erro ao cadastrar colaborador.'
     mostrarDialogErro.value = true
@@ -214,6 +207,7 @@ const handleSubmit = async () => {
   color: red;
   font-weight: bold;
   font-size: 24px;
+  text-align: center;
 }
 
 .destaque {
