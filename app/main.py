@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 from dotenv import load_dotenv
 import os
 
-from app.routes import colaboradores, user_register
+from app.routes import colaboradores, user_register, registro_ponto
 from app.database import Base, engine
 from app import models
 
@@ -36,6 +36,7 @@ app.add_middleware(
 # Registra as rotas
 app.include_router(user_register.router)
 app.include_router(colaboradores.router)
+app.include_router(registro_ponto.router)
 
 # Rota principal
 @app.get("/")
