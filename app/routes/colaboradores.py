@@ -9,4 +9,4 @@ router = APIRouter()
 @router.post("/login")
 def login(login_data: LoginRequest, db: Session = Depends(get_db)):
     colaborador = login_colaborador(login_data.cpf, login_data.senha, db)
-    return {"mensagem": "Login realizado com sucesso", "nome": colaborador.nome}
+    return {"mensagem": "Login realizado com sucesso", "nome": colaborador.nome_col}

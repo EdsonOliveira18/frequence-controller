@@ -5,16 +5,9 @@ from app.schemas import ColaboradorCreate
 from app.utils import gerar_senha, hash_senha
 
 def cadastrar_novo_colaborador(dados: ColaboradorCreate, db: Session) -> str:
-    """
-    Realiza a lógica de cadastro de um novo colaborador:
-    - Verifica se já existe CPF ou e-mail
-    - Gera senha
-    - Hasheia senha
-    - Persiste no banco
-    - Retorna a senha gerada
-    """
+
     existente = db.query(Colaborador).filter(
-        (Colaborador.cpf == dados.cpf) | (Colaborador.email == dados.email)
+        (Colaborador.cpf_col == dados.cpf) | (Colaborador.email_col == dados.email)
     ).first()
 
     if existente:
@@ -24,10 +17,10 @@ def cadastrar_novo_colaborador(dados: ColaboradorCreate, db: Session) -> str:
     senha_criptografada = hash_senha(senha)
 
     novo = Colaborador(
-        nome=dados.nome,
-        cpf=dados.cpf,
-        email=dados.email,
-        senha_hash=senha_criptografada
+        nome_col=dados.nome,
+        cpf_col=dados.cpf,
+        email_col=dados.email,
+        senha_col=senha_criptografada
     )
 
     db.add(novo)

@@ -1,19 +1,27 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+import datetime
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Date
+from datetime import datetime, date
+from sqlalchemy.orm import relationship
 from app.database import Base
 
 class Colaborador(Base): 
-    __tablename__ = "colaboradores"
+    __tablename__ = "colaborador"
 
-    id = Column(Integer, primary_key=True, index=True)
-    nome = Column(String, nullable=False)
-    cpf = Column(String, unique=True, nullable=False)
-    email = Column(String, unique=True, nullable=False)
-    senha_hash = Column(String, nullable=False)
+    id_col = Column(Integer, primary_key=True, index=True)
+    nome_col = Column(String, nullable=False)
+    cpf_col = Column(String, unique=True, nullable=False)
+    email_col = Column(String, unique=True, nullable=False)
+    senha_col = Column(String, nullable=False)
 
-class Ponto(Base):
-    __tablename__ = "ponto"
+    registros = relationship("RegistroPonto", back_populates="colaborador")
 
-    id = Column(Integer, primary_key=True, index=True)
-    fk_colaborador = Column(Integer, ForeignKey("colaboradores.id"), nullable=False)
-    entrada = Column(DateTime, nullable=False)
-    saida = Column(DateTime, nullable=True)
+class RegistroPonto(Base):
+    __tablename__ = "registro_ponto"
+
+    id_reg = Column(Integer, primary_key=True, index=True)
+    colaborador_id = Column(Integer, ForeignKey("colaborador.id_col"))
+    tipo_reg = Column(String)                                                   # "entrada" ou "saida"
+    timestamp_reg = Column(DateTime, default=datetime.utcnow)
+    data_reg = Column(Date)                                                   # Apenas a data (YYYY-MM-DD) para facilitar agrupamentos
+
+    colaborador = relationship("Colaborador", back_populates="registros")
