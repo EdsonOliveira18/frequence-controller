@@ -58,7 +58,8 @@ import ModalLoginColaborador from '@/components/ModalLoginColaborador.vue'
 
 const mostrarLogin = ref(false)
 const mostrarModal = ref(false)
-const urlCadastro = `${import.meta.env.VITE_PUBLIC_APP_URL}/cadastro`
+const VITE_PUBLIC_APP_URL = import.meta.env.VITE_PUBLIC_APP_URL
+const urlCadastro = `${VITE_PUBLIC_APP_URL}/cadastro`
 </script>
 
 <style scoped>
