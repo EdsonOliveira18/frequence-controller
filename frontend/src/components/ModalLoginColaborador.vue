@@ -10,38 +10,52 @@
 
       <div class="form-group">
         <label for="cpf">CPF</label>
-        <InputMask id="cpf" v-model="cpf" mask="999.999.999-99" class="login-input" />
+        <InputMask 
+          id="cpf"
+          name="registro_ponto_usuario"
+          v-model="cpf"
+          mask="999.999.999-99"
+          class="login-input"
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+  />
       </div>
 
       <div class="form-group">
         <label for="senha">Senha</label>
-        <Password v-model="senha" inputId="senha" toggleMask class="login-input" />
+        <Password 
+          v-model="senha"
+          inputId="senha"
+          toggleMask
+          class="login-input"
+          autocomplete="off" />
       </div>
-
-      <Button label="Registrar Ponto" class="login-button" @click="handleLogin" :disabled="!formularioValido" />
-
-      <!-- <Message v-if="erro" severity="error" class="login-msg">{{ erro }}</Message>
-      <Message v-if="sucesso" severity="success" class="login-msg">Login realizado com sucesso!</Message> -->
+      <Button type="button" label="Registrar Ponto" class="login-button" @click="handleLogin" :disabled="!formularioValido" />
     </div>
   </Dialog>
   <Dialog
     v-model:visible="mostrarResultado"
     modal
     class="dialog-resultado"
-    :style="{ width: '400px', height: '600px' }"
+    :style="{ width: '400px', height: '650px' }"
     :pt="ptDialog">
   <div class="msg-container">
     <h3 class="rgt-title">Registro de Ponto</h3>
     <RelogioDigital />
     <div class="msg-container-parag">
         <p>{{ mensagem }}</p>
+        <p style="font-weight: bold; font-family: Arial; font-size: 1.2rem;">
+          Fechando em {{ contador }} segundo<span v-if="contador !== 1">s</span>...
+        </p>
     </div>
   </div>
   </Dialog>
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, computed, ref } from 'vue'
+import { nextTick } from 'vue'
+import { defineProps, defineEmits, computed, ref, watch } from 'vue'
 import Dialog from 'primevue/dialog'
 import InputMask from 'primevue/inputmask'
 import Password from 'primevue/password'
@@ -54,6 +68,9 @@ import RelogioDigital from "./RelogioDigital.vue";
 const colaborador = ref(null)
 const mensagem = ref('')
 const mostrarResultado = ref(false)
+
+const contador = ref(15)
+let intervalo: ReturnType<typeof setInterval> | null = null
 
 const props = defineProps<{ visible: boolean }>()
 const emit = defineEmits<{
@@ -73,34 +90,63 @@ const modelVisible = computed({
 
 const cpf = ref('')
 const senha = ref('')
-// const erro = ref('')
-// const sucesso = ref(false)
 
 const formularioValido = computed(() => cpf.value.replace(/\D/g, '').length === 11 && senha.value.trim().length >= 4)
+
+watch(mostrarResultado, (visivel) => {
+  if (!visivel) {
+    modelVisible.value = false
+    // Quando o Dialog de resultado é fechado manualmente, limpar o contador
+    if (intervalo) {
+      clearInterval(intervalo)
+      intervalo = null
+    }
+    contador.value = 15
+  }
+})
 
 async function handleLogin() {
   try {
     const response = await loginColaborador(cpf.value, senha.value)
 
-    // Corrige: pega os dados reais da resposta
     colaborador.value = response 
 
-    // Logs para depuração
     console.log('Colaborador autenticado:', colaborador.value)
     console.log('Enviando para registrar ponto com ID:', colaborador.value.id_col)
 
     const registro = await registrarPonto(colaborador.value.id_col)
 
-    const hora = new Date(registro.timestamp_reg).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+    const hora = new Date(registro.timestamp_reg).toLocaleTimeString('pt-BR', {
+      hour: '2-digit',
+      minute: '2-digit'
+    })
 
     mensagem.value = `${colaborador.value.nome_col}, seu ponto de ${registro.tipo_reg} foi registrado às ${hora}`
     mostrarResultado.value = true
 
-    // (opcional) Limpa os campos
     cpf.value = ''
     senha.value = ''
+
+    contador.value = 15
+    intervalo = setInterval(() => {
+    contador.value--
+    if (contador.value === 0) {
+      clearInterval(intervalo!)
+      mostrarResultado.value = false
+      modelVisible.value = false
+    }
+    }, 1000)
+    
+    // // ✅ Apenas após sucesso
+    // setTimeout(() => {
+    //   mostrarResultado.value = false
+    //   modelVisible.value = false // Fecha Dialog principal
+    // }, 15000) //15 segundos
+
   } catch (error: any) {
     console.error('Erro no login ou registro de ponto:', error)
+    cpf.value = ''
+    senha.value = ''
 
     if (error.response) {
       console.log('Status:', error.response.status)

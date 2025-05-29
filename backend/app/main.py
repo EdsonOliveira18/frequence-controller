@@ -3,14 +3,17 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from dotenv import load_dotenv
 import os
-
+from pathlib import Path
 from app.routes import colaboradores, user_register, registro_ponto
 from app.database import Base, engine
 from app import models
 
-load_dotenv()
+env_path = Path(__file__).resolve().parent.parent / ".env"''''''
+
+load_dotenv(dotenv_path=env_path,  override=True)
 
 frontend_origins = os.getenv("FRONTEND_ORIGINS", "").split(",")
+print(f"ENV: {frontend_origins}")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
