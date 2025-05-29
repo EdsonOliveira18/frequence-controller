@@ -16,6 +16,15 @@ class LoginRequest(BaseModel):
     cpf: str
     senha: str
 
+class ColaboradorOut(BaseModel):
+    id_col: int
+    nome_col: str
+    cpf_col: str
+    email_col: str
+
+    class Config:
+        orm_mode = True
+
 # Schema para entrada de dados no registro de ponto
 class RegistroPontoCreate(BaseModel):
     colaborador_id: int

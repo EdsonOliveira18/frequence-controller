@@ -9,19 +9,26 @@ def registrar_ponto(colaborador_id: int, db: Session) -> models.RegistroPonto:
     if not colaborador:
         raise ValueError("Colaborador não encontrado.")
 
+    print("✅ Colaborador encontrado:", colaborador.nome_col)
+    
     # Busca o último registro (qualquer data)
-    ultimo_registro = (
-        db.query(models.RegistroPonto)
-        .filter(models.RegistroPonto.colaborador_id == colaborador_id)
-        .order_by(models.RegistroPonto.timestamp_reg.desc())
-        .first()
-    )
+    registros_todos = db.query(models.RegistroPonto).filter(
+        models.RegistroPonto.colaborador_id == colaborador_id
+    ).order_by(models.RegistroPonto.timestamp_reg.desc()).all()
+
+    print(f"📋 Todos os registros do colaborador {colaborador_id}:")
+    for r in registros_todos:
+        print(f" - {r.tipo_reg} às {r.timestamp_reg}")
+
+    ultimo_registro = registros_todos[0] if registros_todos else None
 
     # Define tipo com base no último registro
     if not ultimo_registro or ultimo_registro.tipo_reg == "saida":
         tipo = "entrada"
     else:
         tipo = "saida"
+
+    print("🧠 Tipo definido para novo registro:", tipo)
 
     agora = datetime.now()
 
@@ -35,6 +42,8 @@ def registrar_ponto(colaborador_id: int, db: Session) -> models.RegistroPonto:
     db.add(novo_registro)
     db.commit()
     db.refresh(novo_registro)
+
+    print("💾 Novo registro salvo:", novo_registro.tipo_reg, "às", novo_registro.timestamp_reg)
 
     return novo_registro
 
