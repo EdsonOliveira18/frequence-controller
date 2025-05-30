@@ -1,4 +1,4 @@
-from pydantic import BaseModel, constr, field_validator
+from pydantic import BaseModel, Field, constr, field_validator
 from datetime import datetime
 from typing import Annotated
 
@@ -14,7 +14,10 @@ class RedefinirSenhaRequest(AcessoAdminBase):
 class RegistroPontoManualRequest(AcessoAdminBase):
     colaborador_id: int
     tipo_reg: str
-    timestamp_reg: datetime
+    timestamp_reg: datetime = Field(
+        example="2025-05-25T00:00:00",
+        description="Horário completo no formato ISO8601. NÃO incluir fuso horário (timezone)."
+    )
 
     @field_validator("tipo_reg")
     @classmethod

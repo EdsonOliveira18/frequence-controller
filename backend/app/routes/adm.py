@@ -42,4 +42,5 @@ def registrar_ponto_manual(request: RegistroPontoManualRequest, db: Session = De
     )
     db.add(novo_registro)
     db.commit()
-    return {"message": "Registro de ponto manual criado com sucesso."}
+    return {"message": "Registro de ponto manual criado com sucesso.",
+            "Novo Ponto registrado" : novo_registro.timestamp_reg}
