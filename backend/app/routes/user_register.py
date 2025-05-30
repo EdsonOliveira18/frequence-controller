@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from app.schemas import ColaboradorCreate
+from app.schemas.user_schema import ColaboradorCreate
 from app.database import get_db
 from app.services.user_service import cadastrar_novo_colaborador
 

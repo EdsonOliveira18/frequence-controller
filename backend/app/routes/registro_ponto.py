@@ -1,15 +1,16 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database import get_db
-from app import schemas, services
+from app import services
 from app.services import registro_service
-from app.schemas import RegistroPontoDebug
+from app.schemas.user_schema import RegistroPontoDebug
+from app.schemas import user_schema
 
 router = APIRouter()
 
-@router.post("/registro", response_model=schemas.RegistroPontoOut)
+@router.post("/registro", response_model=user_schema.RegistroPontoOut)
 def registrar_ponto_endpoint(
-    registro: schemas.RegistroPontoCreate,
+    registro: user_schema.RegistroPontoCreate,
     db: Session = Depends(get_db)
 ):
     try:
@@ -21,7 +22,7 @@ def registrar_ponto_endpoint(
         raise HTTPException(status_code=500, detail="Erro ao registrar ponto.")
     
 # Rota de debug do controle de ponto para casos onde o ponto ultrapasse a meia noite
-@router.post("/registro/debug", response_model=schemas.RegistroPontoOut)
+@router.post("/registro/debug", response_model=user_schema.RegistroPontoOut)
 def registrar_ponto_debug_endpoint(
     dados: RegistroPontoDebug,
     db: Session = Depends(get_db)

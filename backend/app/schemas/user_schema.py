@@ -23,7 +23,7 @@ class ColaboradorOut(BaseModel):
     email_col: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 # Schema para entrada de dados no registro de ponto
 class RegistroPontoCreate(BaseModel):
