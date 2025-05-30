@@ -1,6 +1,10 @@
 import random
 import string
 import bcrypt
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 #Função responsável por gerar a senha de forma randomica com 8 caracteres.
 def gerar_senha(tamanho: int = 8) -> str:
@@ -14,3 +18,7 @@ def hash_senha(senha: str) -> str:
 #Função para verificar se o hash da senha corresponde ao que está no BD.
 def verificar_senha(senha_plain: str, senha_hash: str) -> bool:
     return bcrypt.checkpw(senha_plain.encode('utf-8'), senha_hash.encode('utf-8'))
+
+def validar_senha_admin(senha_recebida: str):
+    senha_correta = os.getenv("ADMIN_KEY")
+    return senha_recebida == senha_correta

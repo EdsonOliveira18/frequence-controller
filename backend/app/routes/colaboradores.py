@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.schemas import LoginRequest, ColaboradorOut
 from app.database import get_db
-from app.services.colaborador_service import login_colaborador  # novo import
+from app.services.colaborador_service import login_colaborador
+from app.schemas.user_schema import ColaboradorOut, LoginRequest
 
 router = APIRouter()
 
