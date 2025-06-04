@@ -43,4 +43,5 @@ def registrar_ponto_manual(request: RegistroPontoManualRequest, db: Session = De
     db.add(novo_registro)
     db.commit()
     return {"message": "Registro de ponto manual criado com sucesso.",
+            "Colaborador": colaborador.nome_col,
             "Novo Ponto registrado" : novo_registro.timestamp_reg}
